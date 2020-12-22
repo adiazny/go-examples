@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -8,6 +9,13 @@ import (
 )
 
 func main() {
+
+	args := os.Args
+	fmt.Printf("args type %T\n", args)
+
+	for ix, val := range args {
+		fmt.Printf("Argument %v: %s\n", ix, val)
+	}
 
 	newFile, err := os.Create("myTemp.txt")
 	if err != nil {
