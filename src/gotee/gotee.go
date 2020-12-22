@@ -9,15 +9,15 @@ import (
 
 func main() {
 
-	args := os.Args
+	args := os.Args[1:]
 	var multiWriter io.Writer
 	writers := make([]io.Writer, 1)
 	writers[0] = os.Stdout
 	argsLength := len(args)
 
-	if argsLength > 1 {
+	if argsLength > 0 {
 
-		for i := 1; i < argsLength; i++ {
+		for i := 0; i < argsLength; i++ {
 			file, err := os.Create(args[i])
 			if err != nil {
 				log.Printf("Error creating file. Error: %s\n", err)
