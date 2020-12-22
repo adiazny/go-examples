@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -11,21 +10,30 @@ import (
 func main() {
 
 	args := os.Args
-	fmt.Printf("args type %T\n", args)
+	var multiWriter io.Writer
+	writers := make([]io.Writer, 1)
+	writers[0] = os.Stdout
+	argsLength := len(args)
 
-	for ix, val := range args {
-		fmt.Printf("Argument %v: %s\n", ix, val)
+	if argsLength > 1 {
+
+		for i := 1; i < argsLength; i++ {
+			file, err := os.Create(args[i])
+			if err != nil {
+				log.Printf("Error creating file. Error: %s\n", err)
+			}
+			defer file.Close()
+			writers = append(writers, file)
+		}
+
+		multiWriter = io.MultiWriter(writers...)
+	} else {
+		multiWriter = io.MultiWriter(os.Stdout)
 	}
-
-	newFile, err := os.Create("myTemp.txt")
-	if err != nil {
-		log.Printf("Error creating file. Error: %s\n", err)
-	}
-	defer newFile.Close()
-
-	multiWriter := io.MultiWriter(os.Stdout, newFile)
 
 	teeReader := io.TeeReader(os.Stdin, multiWriter)
 	ioutil.ReadAll(teeReader)
 
+	//TODO: add the -a option. Append the output to the files rather than overwriting them.
+	//TODO: add the -i option. Ignore the SIGINT signal.
 }
