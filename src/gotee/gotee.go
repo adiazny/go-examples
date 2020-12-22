@@ -1,5 +1,7 @@
 package main
 
+//TODO: add the -i option. Ignore the SIGINT signal.
+
 import (
 	"io"
 	"io/ioutil"
@@ -14,14 +16,18 @@ func main() {
 	writers := make([]io.Writer, 1)
 	writers[0] = os.Stdout
 	argsLength := len(args)
+	canAppend := false
+	index := 0
 
 	if argsLength > 0 {
+		if args[0] == "-a" {
+			canAppend = true
+			// argsLength--
+			index++
+		}
 
-		for i := 0; i < argsLength; i++ {
-			file, err := os.Create(args[i])
-			if err != nil {
-				log.Printf("Error creating file. Error: %s\n", err)
-			}
+		for i := index; i < argsLength; i++ {
+			file := CreateFile(args[i], canAppend)
 			defer file.Close()
 			writers = append(writers, file)
 		}
@@ -34,6 +40,22 @@ func main() {
 	teeReader := io.TeeReader(os.Stdin, multiWriter)
 	ioutil.ReadAll(teeReader)
 
-	//TODO: add the -a option. Append the output to the files rather than overwriting them.
-	//TODO: add the -i option. Ignore the SIGINT signal.
+}
+
+// CreateFile returns a file with append or no append ability
+func CreateFile(fileName string, canAppend bool) *os.File {
+	if canAppend {
+		file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return file
+	}
+
+	file, err := os.OpenFile(fileName, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return file
+
 }
