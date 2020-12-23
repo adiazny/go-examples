@@ -43,15 +43,16 @@ func main() {
 
 // CreateFile returns a file with append or no append ability
 func CreateFile(fileName string, canAppend bool) *os.File {
-	var err error
-	var file *os.File
+	var fileMode int
 
 	if canAppend {
-		file, err = os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		fileMode = os.O_APPEND
 	} else {
-
-		file, err = os.OpenFile(fileName, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+		fileMode = os.O_TRUNC
 	}
+
+	file, err := os.OpenFile(fileName, fileMode|os.O_CREATE|os.O_WRONLY, 0644)
+
 	if err != nil {
 		log.Fatal(err)
 	}
