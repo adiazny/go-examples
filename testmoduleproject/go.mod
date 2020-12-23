@@ -1,4 +1,4 @@
-module testproject
+module go-examples/testmoduleproject
 
 go 1.15
 
