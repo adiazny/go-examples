@@ -12,5 +12,6 @@ If you don’t want to use a debugger, the following is useful as a simple debug
 * Use print-statements (with the fmt.Print functions) at well-chosen places.
 * In fmt.Printf functions, use the following specifiers to obtain complete info about variables:
     * **%v** gives us a complete output of the value with its fields.
+    * **%+v** gives us a complete output of the value with its fields and the field names.
     * **%#v** gives us a complete output of the value with its fields and qualified type name.
     * **%T** gives us the complete type specification.

@@ -17,3 +17,9 @@ Libraries for building standard or basic Command Line applications.
 * [Standard CLI](https://github.com/avelino/awesome-go#standard-cli)
 * [Cobra](https://github.com/spf13/cobra)
 * [Building an Awesume CLI App in Go](https://spf13.com/presentation/building-an-awesome-cli-app-in-go-oscon/)
+
+### JSON
+* [Parsing JSON in a request body](https://gist.github.com/aodin/9493190)
+
+### Time
+* [Handling UNIX timestamps] (https://www.yellowduck.be/posts/handling-unix-timestamps-in-json/)
